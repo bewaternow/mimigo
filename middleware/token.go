@@ -34,7 +34,7 @@ func TokenAuth() gin.HandlerFunc {
 		tokenCollection := database.MongoDB.Database(config.MongoDefaultDB).Collection(database.PersonalAccessToken)
 		var tokenRecord collections.PersonalAccessToken
 		//	令牌有效的两个条件：1、记录存在；2、令牌没有过期
-		if err := tokenCollection.FindOne(context.Background(), bson.D{{"token", usefulAccessToken[1]},{"expired_at",bson.D{{"$gt", time.Now()}}}}).Decode(&tokenRecord); err != nil {
+		if err := tokenCollection.FindOne(context.Background(), bson.D{{"ip_address",c.ClientIP()},{"userAgent",c.GetHeader("User-Agent")},{"token", usefulAccessToken[1]},{"expired_at",bson.D{{"$gt", time.Now()}}}}).Decode(&tokenRecord); err != nil {
 			c.JSON(http.StatusOK, serializer.Response{
 				ErrCode: serializer.AccessDenied,
 				Message: "令牌已失效",

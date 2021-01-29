@@ -29,7 +29,7 @@ func Login(c *gin.Context) {
 		return
 	}
 
-	accessToken, err := loginService.GenerateJwtToken()
+	accessToken, err := loginService.GenerateJwtToken(c.GetHeader("User-Agent"), c.ClientIP())
 	if err != nil {
 		c.JSON(http.StatusOK, serializer.Response{
 			ErrCode: serializer.CreateTokenError,

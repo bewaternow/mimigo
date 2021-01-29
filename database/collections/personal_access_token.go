@@ -11,6 +11,8 @@ type PersonalAccessToken struct {
 	UserId    primitive.ObjectID `json:"userId" bson:"userId"`
 	Token     string             `json:"token" bson:"token"`
 	Device    string             `json:"device" bson:"device"`
+	IpAddress string             `json:"ip_address" bson:"ip_address"`
+	UserAgent string             `json:"user_agent" bson:"userAgent"`
 	ExpiredAt time.Time          `json:"expired_at" bson:"expired_at"`
 	CreatedAt time.Time          `json:"created_at" bson:"created_at"`
 	UpdatedAt time.Time          `json:"updated_at" bson:"updated_at"`

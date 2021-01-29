@@ -42,13 +42,13 @@ func (userService UserLoginService) UserExist() (collections.User, error) {
 }
 
 type AuthInfo struct {
-	AccessToken string `json:"access_token"`
-	ExpiredAt  int64  `json:"expired_at"`
-	Authority   string `json:"authority" bson:"authority"`
+	AccessToken string    `json:"access_token"`
+	ExpiredAt   time.Time `json:"expired_at"`
+	Authority   string    `json:"authority" bson:"authority"`
 }
 
 // 生成令牌
-func (userService UserLoginService) GenerateJwtToken() (AuthInfo, error) {
+func (userService UserLoginService) GenerateJwtToken(userAgent string, ipAddress string) (AuthInfo, error) {
 
 	j := &middleware.JWT{
 		SigningKey: []byte(config.SigningKey),
@@ -69,9 +69,9 @@ func (userService UserLoginService) GenerateJwtToken() (AuthInfo, error) {
 		Mobile:    user.Mobile,
 		Authority: user.Authority,
 		StandardClaims: jwtgo.StandardClaims{
-			NotBefore: int64(time.Now().Unix() - 1000),                         // 签名生效时间
-			ExpiresAt: int64(time.Now().Unix() + 3600*int64(config.TokenLife)), // 过期时间设置在配置文件中
-			Issuer:    config.SigningKey,                                       //签名的发行者
+			NotBefore: int64(time.Now().Unix() - 1000),                // 签名生效时间
+			ExpiresAt: int64(time.Now().Add(config.TokenLife).Unix()), // 过期时间设置在配置文件中
+			Issuer:    config.SigningKey,                              //签名的发行者
 		},
 	}
 
@@ -86,6 +86,8 @@ func (userService UserLoginService) GenerateJwtToken() (AuthInfo, error) {
 	tokenRecord := collections.PersonalAccessToken{
 		UserId:    user.Id,
 		Token:     accessToken,
+		UserAgent: userAgent,
+		IpAddress: ipAddress,
 	}.FormatToken()
 
 	_, insertErr := collection.InsertOne(context.Background(), tokenRecord)
@@ -96,7 +98,7 @@ func (userService UserLoginService) GenerateJwtToken() (AuthInfo, error) {
 
 	return AuthInfo{
 		accessToken,
-		claims.ExpiresAt,
+		tokenRecord.ExpiredAt,
 		user.Authority,
 	}, nil
 }
