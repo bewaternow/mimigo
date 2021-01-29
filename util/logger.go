@@ -36,7 +36,7 @@ func (ll *Logger) Panic(format string, v ...interface{}) {
 	}
 	msg := fmt.Sprintf("[Panic] "+format, v...)
 	ll.Println(msg)
-	os.Exit(0)
+	os.Exit(1)
 }
 
 // Error 错误
