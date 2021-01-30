@@ -21,15 +21,14 @@ type UserLogoutService struct{}
 
 // UserCheck 用户记录验证
 func (userService UserLoginService) UserExist() (collections.User, error) {
-	collection := database.MongoDB.Database(config.MongoDefaultDB).Collection(database.User)
 	filter := bson.D{{"mobile", userService.Mobile}}
 
-	if exist, err := collection.CountDocuments(context.TODO(), filter); err != nil {
+	if exist, err := database.SupportUser.CountDocuments(context.TODO(), filter); err != nil {
 		return collections.User{}, err
 	} else {
 		if exist > 0 {
 			var account collections.User
-			if err := collection.FindOne(context.TODO(), filter).Decode(&account); err != nil {
+			if err := database.SupportUser.FindOne(context.TODO(), filter).Decode(&account); err != nil {
 				return collections.User{}, err
 			}
 			return account, nil
@@ -81,8 +80,6 @@ func (userService UserLoginService) GenerateJwtToken(userAgent string, ipAddress
 		return AuthInfo{}, err
 	}
 	//	插入到数据库中
-	collection := database.MongoDB.Database(config.MongoDefaultDB).Collection(database.PersonalAccessToken)
-
 	tokenRecord := collections.PersonalAccessToken{
 		UserId:    user.Id,
 		Token:     accessToken,
@@ -90,7 +87,7 @@ func (userService UserLoginService) GenerateJwtToken(userAgent string, ipAddress
 		IpAddress: ipAddress,
 	}.FormatToken()
 
-	_, insertErr := collection.InsertOne(context.Background(), tokenRecord)
+	_, insertErr := database.SupportPersonalAccessToken.InsertOne(context.Background(), tokenRecord)
 
 	if insertErr != nil {
 		return AuthInfo{}, insertErr
@@ -105,8 +102,7 @@ func (userService UserLoginService) GenerateJwtToken(userAgent string, ipAddress
 
 func(logoutService UserLogoutService) Logout(loginUser collections.LoginUser) error {
 	//	把token从数据库中删除
-	tokenCollection := database.MongoDB.Database(config.MongoDefaultDB).Collection(database.PersonalAccessToken)
-	if result,err := tokenCollection.DeleteOne(context.Background(), bson.M{"_id": loginUser.TokenId}); err != nil {
+	if result,err := database.SupportPersonalAccessToken.DeleteOne(context.Background(), bson.M{"_id": loginUser.TokenId}); err != nil {
 		return err
 	}else{
 		fmt.Println(result)

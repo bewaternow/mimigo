@@ -31,21 +31,19 @@ func TokenAuth() gin.HandlerFunc {
 			return
 		}
 
-		tokenCollection := database.MongoDB.Database(config.MongoDefaultDB).Collection(database.PersonalAccessToken)
 		var tokenRecord collections.PersonalAccessToken
 		//	令牌有效的两个条件：1、记录存在；2、令牌没有过期
-		if err := tokenCollection.FindOne(context.Background(), bson.D{{"ip_address",c.ClientIP()},{"userAgent",c.GetHeader("User-Agent")},{"token", usefulAccessToken[1]},{"expired_at",bson.D{{"$gt", time.Now()}}}}).Decode(&tokenRecord); err != nil {
+		if err := database.SupportPersonalAccessToken.FindOne(context.Background(), bson.D{{"ipAddress",c.ClientIP()},{"userAgent",c.GetHeader("User-Agent")},{"token", usefulAccessToken[1]},{"expired_at",bson.D{{"$gt", time.Now()}}}}).Decode(&tokenRecord); err != nil {
 			c.JSON(http.StatusOK, serializer.Response{
 				ErrCode: serializer.AccessDenied,
-				Message: "令牌已失效",
+				Message: "无效的令牌",
 			}.TimeMarked())
 			c.Abort()
 			return
 		}
 
-		userCollection := database.MongoDB.Database(config.MongoDefaultDB).Collection(database.User)
 		var userRecord collections.User
-		if err := userCollection.FindOne(context.Background(), bson.M{"_id": tokenRecord.UserId}).Decode(&userRecord); err != nil {
+		if err := database.SupportUser.FindOne(context.Background(), bson.M{"_id": tokenRecord.UserId}).Decode(&userRecord); err != nil {
 			c.JSON(http.StatusOK, serializer.Response{
 				ErrCode: serializer.AccessDenied,
 				Message: "无效的令牌",

@@ -5,6 +5,10 @@ package serializer
 // 五开头的五位数错误编码为服务器端错误，比如数据库操作失败
 // 四开头的五位数错误编码为客户端错误，有时候是客户端代码写错了，有时候是用户操作错误
 const (
+	Success = 0
+)
+
+const (
 	UserInputError   = 40003
 	DbCreateError    = 50001
 	DbUpdateError    = 50002

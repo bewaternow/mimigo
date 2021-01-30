@@ -19,12 +19,12 @@ func NewRouter() *gin.Engine {
 		v1.POST("/register", api.RegisterUser)
 		v1.POST("/login", api.Login)
 		// 使用中间件验证.
-		jwt := v1.Group("")
-		jwt.Use(middleware.TokenAuth())
+		auth := v1.Group("")
+		auth.Use(middleware.TokenAuth())
 		{
-			jwt.GET("/account/info", api.GetUserInfo)
-			jwt.GET("/account/logout", api.Logout)
-			jwt.POST("/aliyun/oss/token", api.AliyunOssSTSToken)
+			auth.GET("/user/profile", api.GetUserInfo)
+			auth.GET("/user/logout", api.Logout)
+			auth.POST("/aliyun/oss/token", api.AliyunOssSTSToken)
 		}
 
 	}

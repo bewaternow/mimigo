@@ -8,8 +8,14 @@ import (
 	"os"
 )
 
-//	mongoDB 数据库连接单例
-var MongoDB *mongo.Client
+var (
+	//	mongoDB 数据库连接单例
+	MongoDB *mongo.Client
+	//	collection 单例，在 collectionMaps.go 中的方法初始化，因为 mongo 是非关系型的，任何字段都可以存储，所以我想在 maps 中创建单例，
+	//	服务直接调用示例，不接触名字，就降低了误操作的可能性
+	SupportUser                *mongo.Collection
+	SupportPersonalAccessToken *mongo.Collection
+)
 
 func Mongo() {
 	clientOptions := options.Client().ApplyURI(os.Getenv("MONGO_URL"))
@@ -27,6 +33,7 @@ func Mongo() {
 	}
 
 	MongoDB = client
+	InitCollections()
 
 	if os.Getenv("DB_MIGRATE") == "true" {
 		migrate()
