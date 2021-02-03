@@ -23,9 +23,21 @@
 
 我有一个建议，每次插入新的数据，务必使用 collections 中的模型结构体来创建，否则最后统计字段的数量将非常困难。
 
-## 接下来我要做的
+## Go Mod
+本项目使用Go Mod管理依赖。
 
-[-] OSS token 的控制
+```
+go mod init Flamingo
+export GOPROXY=http://mirrors.aliyun.com/goproxy/
+go run main.go // 自动安装
+```
+
+## 运行
+```
+go run main.go
+```
+
+项目运行后启动在567端口（可以修改，参考gin文档)
 
 ## 更新日志
 ### 【Ver 0.1.2】 2021年1月30日 17:06 ，本次更新内容有：
