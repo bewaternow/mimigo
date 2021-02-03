@@ -1,6 +1,6 @@
 # Flamingo （基于 Gin 和 mongo-driver 搭建的高性能极简 API 框架）
 
-
+![avatar](./static/flamingo.png)
 
 ## 声明
 本框架以令牌方式授权，借用了jwt的令牌发授方法，但实际上验证已经自己重写。我参考了 singo 等框架，结合自己的使用场景做了适配。  
