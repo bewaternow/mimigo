@@ -1,10 +1,11 @@
-# Flamingo （基于 Gin 和 mongo-driver 搭建的高性能极简 API 框架）
+# mimigo （基于 Gin 和 mongo-driver 搭建的高性能极简 API 框架）
 
-![avatar](./static/flamingo.png)
+![avatar](static/mimigo.png)
 
 ## 声明
-本框架以令牌方式授权，借用了jwt的令牌发授方法，但实际上验证已经自己重写。我参考了 singo 等框架，结合自己的使用场景做了适配。  
-如果本项目你发现有任何BUG 、使用疑问或者优化意见，欢迎提交PullRequest
+
+本框架以令牌方式授权，借用了 jwt 的令牌发授方法，但实际上验证已经自己重写。我参考了 singo 等框架，结合自己的使用场景做了适配。  
+如果本项目你发现有任何 BUG 、使用疑问或者优化意见，欢迎提交 PullRequest
 
 ### 特别的优化说明：
 
@@ -24,23 +25,27 @@
 我有一个建议，每次插入新的数据，务必使用 collections 中的模型结构体来创建，否则最后统计字段的数量将非常困难。
 
 ## Go Mod
-本项目使用Go Mod管理依赖。
+
+本项目使用 Go Mod 管理依赖。
 
 ```
-go mod init Flamingo
+go mod init mimigo
 export GOPROXY=http://mirrors.aliyun.com/goproxy/
 go run main.go // 自动安装
 ```
 
 ## 运行
+
 ```
 go run main.go
 ```
 
-项目运行后启动在567端口（可以修改，参考gin文档)
+项目运行后启动在 567 端口（可以修改，参考 gin 文档)
 
 ## 更新日志
-### 【Ver 0.1.2】 2021年1月30日 17:06 ，本次更新内容有：
+
+### 【Ver 0.1.2】 2021 年 1 月 30 日 17:06 ，本次更新内容有：
+
 1、将每个 collection 做成单例，放在 database 中的 collectionMaps 文件中，目的是为了减少开发者对 mongo 的误操作，很多人英文单词都会拼错的。在服务中我们可以直接调用单例，我做了示例。  
 2、将序列化从服务中抽离，目的是让服务更加专注于业务。我们可以把序列化方法写在 collections 的模型中，在控制器中调用。  
 3、将所有的返回错误码都定义为 const 类型，存放于 serializer 中的 code 中。  

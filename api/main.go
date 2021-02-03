@@ -1,13 +1,13 @@
 package api
 
 import (
-	"Flamingo/config"
-	"Flamingo/database/collections"
-	"Flamingo/serializer"
 	"encoding/json"
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
+	"mimigo/config"
+	"mimigo/database/collections"
+	"mimigo/serializer"
 )
 
 // ErrorResponse 返回错误消息

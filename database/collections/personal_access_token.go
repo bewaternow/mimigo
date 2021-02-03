@@ -1,8 +1,8 @@
 package collections
 
 import (
-	"Flamingo/config"
 	"go.mongodb.org/mongo-driver/bson/primitive"
+	"mimigo/config"
 	"time"
 )
 

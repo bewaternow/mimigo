@@ -1,10 +1,10 @@
 package api
 
 import (
-	"Flamingo/config/aliyun"
 	"fmt"
 	"github.com/aliyun/aliyun-oss-go-sdk/oss"
 	"github.com/gin-gonic/gin"
+	"mimigo/config/aliyun"
 	"net/http"
 	"os"
 )

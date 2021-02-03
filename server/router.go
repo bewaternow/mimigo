@@ -1,9 +1,9 @@
 package server
 
 import (
-	"Flamingo/api"
-	"Flamingo/middleware"
 	"github.com/gin-gonic/gin"
+	"mimigo/api"
+	"mimigo/middleware"
 )
 
 // NewRouter 路由配置

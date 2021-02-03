@@ -1,8 +1,8 @@
 package main
 
 import (
-	"Flamingo/config"
-	"Flamingo/server"
+	"mimigo/config"
+	"mimigo/server"
 )
 
 func main() {

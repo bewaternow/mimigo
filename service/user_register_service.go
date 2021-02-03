@@ -1,13 +1,13 @@
 package service
 
 import (
-	"Flamingo/database"
-	"Flamingo/database/collections"
-	"Flamingo/serializer"
 	"context"
 	"fmt"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
+	"mimigo/database"
+	"mimigo/database/collections"
+	"mimigo/serializer"
 	"time"
 )
 
@@ -26,7 +26,7 @@ func (userService *UserRegisterService) valid() error {
 		return err
 	} else {
 		if exist > 0 {
-			return fmt.Errorf("%d 该手机号已经注册",serializer.MobileExist)
+			return fmt.Errorf("%d 该手机号已经注册", serializer.MobileExist)
 		}
 	}
 

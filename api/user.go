@@ -1,9 +1,9 @@
 package api
 
 import (
-	"Flamingo/serializer"
-	"Flamingo/service"
 	"github.com/gin-gonic/gin"
+	"mimigo/serializer"
+	"mimigo/service"
 	"net/http"
 )
 
@@ -15,20 +15,19 @@ func RegisterUser(c *gin.Context) {
 		return
 	}
 
-	if err := registerService.Register();err != nil{
+	if err := registerService.Register(); err != nil {
 		c.JSON(http.StatusOK, serializer.Response{
 			ErrCode: serializer.DbCreateError,
 			Message: err.Error(),
 			Content: nil,
 			Error:   err.Error(),
 		}.TimeMarked())
-	}else{
+	} else {
 		c.JSON(http.StatusOK, serializer.Response{
 			ErrCode: serializer.Success,
 			Message: "用户注册成功",
 		}.TimeMarked())
 	}
-
 
 }
 

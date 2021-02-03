@@ -1,14 +1,14 @@
 package service
 
 import (
-	"Flamingo/config"
-	"Flamingo/database"
-	"Flamingo/database/collections"
-	"Flamingo/middleware"
 	"context"
 	"fmt"
 	jwtgo "github.com/dgrijalva/jwt-go"
 	"go.mongodb.org/mongo-driver/bson"
+	"mimigo/config"
+	"mimigo/database"
+	"mimigo/database/collections"
+	"mimigo/middleware"
 	"time"
 )
 
@@ -100,11 +100,11 @@ func (userService UserLoginService) GenerateJwtToken(userAgent string, ipAddress
 	}, nil
 }
 
-func(logoutService UserLogoutService) Logout(loginUser collections.LoginUser) error {
+func (logoutService UserLogoutService) Logout(loginUser collections.LoginUser) error {
 	//	把token从数据库中删除
-	if result,err := database.SupportPersonalAccessToken.DeleteOne(context.Background(), bson.M{"_id": loginUser.TokenId}); err != nil {
+	if result, err := database.SupportPersonalAccessToken.DeleteOne(context.Background(), bson.M{"_id": loginUser.TokenId}); err != nil {
 		return err
-	}else{
+	} else {
 		fmt.Println(result)
 	}
 

@@ -1,4 +1,4 @@
-module Flamingo
+module mimigo
 
 go 1.15
 

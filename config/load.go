@@ -1,10 +1,10 @@
 package config
 
 import (
-	"Flamingo/database"
-	"Flamingo/util"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
+	"mimigo/database"
+	"mimigo/util"
 	"os"
 	"time"
 )

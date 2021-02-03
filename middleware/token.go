@@ -1,16 +1,16 @@
 package middleware
 
 import (
-	"Flamingo/config"
-	"Flamingo/database"
-	"Flamingo/database/collections"
-	"Flamingo/serializer"
 	"context"
 	"errors"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
+	"mimigo/config"
+	"mimigo/database"
+	"mimigo/database/collections"
+	"mimigo/serializer"
 	"net/http"
 	"strings"
 	"time"
@@ -33,7 +33,7 @@ func TokenAuth() gin.HandlerFunc {
 
 		var tokenRecord collections.PersonalAccessToken
 		//	令牌有效的两个条件：1、记录存在；2、令牌没有过期
-		if err := database.SupportPersonalAccessToken.FindOne(context.Background(), bson.D{{"ipAddress",c.ClientIP()},{"userAgent",c.GetHeader("User-Agent")},{"token", usefulAccessToken[1]},{"expired_at",bson.D{{"$gt", time.Now()}}}}).Decode(&tokenRecord); err != nil {
+		if err := database.SupportPersonalAccessToken.FindOne(context.Background(), bson.D{{"ipAddress", c.ClientIP()}, {"userAgent", c.GetHeader("User-Agent")}, {"token", usefulAccessToken[1]}, {"expired_at", bson.D{{"$gt", time.Now()}}}}).Decode(&tokenRecord); err != nil {
 			c.JSON(http.StatusOK, serializer.Response{
 				ErrCode: serializer.AccessDenied,
 				Message: "无效的令牌",
